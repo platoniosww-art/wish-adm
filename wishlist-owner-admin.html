@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Wishlist Owner Console — Панель владельца сервиса</title>
+  <title>Wishlist Owner Console v2 — Панель владельца сервиса</title>
   <style>
     :root, [data-theme="dark"] {
       --bg: #090A0D;
@@ -106,7 +106,7 @@
 
     .gate-card {
       width: 100%;
-      max-width: 430px;
+      max-width: 440px;
       background: var(--card);
       border: 1px solid var(--border-strong);
       border-radius: 24px;
@@ -114,7 +114,7 @@
       box-shadow: var(--shadow-lg);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 15px;
     }
 
     .gate-brand {
@@ -160,7 +160,7 @@
     }
 
     .topbar-inner {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -250,6 +250,12 @@
     }
     .btn-primary:hover { background: #e62449; border-color: #e62449; }
 
+    .btn-blue {
+      background: var(--blue-soft);
+      border-color: rgba(59, 130, 246, 0.35);
+      color: var(--blue);
+    }
+
     .btn-warn {
       background: var(--amber-soft);
       border-color: rgba(245, 158, 11, 0.35);
@@ -277,7 +283,7 @@
 
     /* Main Container */
     .main {
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       padding: 18px 16px 0;
       display: flex;
@@ -497,6 +503,13 @@
       color: var(--text-secondary);
       padding: 3px 8px;
       border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .room-chip:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-soft);
     }
 
     .ban-reason-box {
@@ -546,12 +559,75 @@
       font-size: 12px;
     }
 
+    /* Observer Room Inspector */
+    .observer-banner {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(255, 45, 85, 0.12));
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .observer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .wish-row-card {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .member-row-card {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .pill-mini {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .pill-blue { background: var(--blue-soft); color: var(--blue); }
+    .pill-green { background: var(--green-soft); color: var(--green); }
+    .pill-amber { background: var(--amber-soft); color: var(--amber); }
+    .pill-red { background: var(--red-soft); color: var(--red); }
+
     /* Modals */
     .modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 120;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.68);
       backdrop-filter: blur(6px);
       display: none;
       align-items: center;
@@ -562,8 +638,8 @@
 
     .modal-box {
       width: 100%;
-      max-width: 640px;
-      max-height: 88vh;
+      max-width: 780px;
+      max-height: 90vh;
       overflow-y: auto;
       background: var(--card);
       border: 1px solid var(--border-strong);
@@ -599,7 +675,7 @@
       letter-spacing: 0.4px;
       margin-bottom: 5px;
     }
-    .form-input, .form-textarea {
+    .form-input, .form-textarea, .form-select {
       width: 100%;
       border: none;
       background: transparent;
@@ -607,6 +683,10 @@
       font-size: 14px;
       font-family: inherit;
       outline: none;
+    }
+    .form-select option {
+      background: var(--card);
+      color: var(--text);
     }
     .form-textarea { min-height: 64px; resize: vertical; }
 
@@ -660,7 +740,7 @@
       </div>
 
       <p style="font-size:13px; color:var(--text-secondary); line-height:1.45;">
-        Отдельный пульт управления аккаунтами пользователей, комнатами, желаниями и журналом действий. Введите ключ доступа владельца.
+        Отдельный пульт управления аккаунтами пользователей, режимом наблюдателя в комнатах, желаниями, участниками и журналом действий.
       </p>
 
       <div class="error-msg" id="gateError"></div>
@@ -691,7 +771,7 @@
         <div class="brand-group">
           <div class="brand-badge">
             <svg class="icon icon-xs" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Owner Admin</span>
+            <span>Owner Admin v2</span>
           </div>
           <div>
             <div style="font-size:16px; font-weight:800; letter-spacing:-0.3px;">Wishlist Control Center</div>
@@ -765,7 +845,7 @@
       <section class="nav-toolbar">
         <div class="segmented" id="consoleTabs">
           <button type="button" class="seg-btn active" data-tab="users" onclick="setConsoleTab('users')">Аккаунты пользователей</button>
-          <button type="button" class="seg-btn" data-tab="rooms" onclick="setConsoleTab('rooms')">Комнаты</button>
+          <button type="button" class="seg-btn" data-tab="rooms" onclick="setConsoleTab('rooms')">Комнаты и наблюдатель</button>
           <button type="button" class="seg-btn" data-tab="activity" onclick="setConsoleTab('activity')">Мониторинг и логи</button>
           <button type="button" class="seg-btn" data-tab="security" onclick="setConsoleTab('security')">Ключ и доступ</button>
         </div>
@@ -781,14 +861,19 @@
     </main>
   </div>
 
-  <!-- User Inspector & Activity Modal -->
+  <!-- User Monitoring Modal (Rooms + Spectator Mode + Wishes + Activity) -->
   <div class="modal-backdrop" id="userInspectorModal" onclick="if(event.target===this) closeModal('userInspectorModal')">
     <div class="modal-box" id="userInspectorBody"></div>
   </div>
 
+  <!-- Room Spectator & Full Control Modal -->
+  <div class="modal-backdrop" id="roomObserverModal" onclick="if(event.target===this) closeModal('roomObserverModal')">
+    <div class="modal-box" id="roomObserverBody"></div>
+  </div>
+
   <!-- Edit User Profile Modal -->
   <div class="modal-backdrop" id="editUserModal" onclick="if(event.target===this) closeModal('editUserModal')">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width:520px;">
       <div class="modal-header">
         <div style="font-size:17px; font-weight:800;" id="editUserTitle">Редактирование аккаунта</div>
         <button type="button" class="btn btn-sm" onclick="closeModal('editUserModal')">✕</button>
@@ -803,7 +888,7 @@
           <label class="form-label">О себе / заметка</label>
           <textarea class="form-textarea" id="editUserBio"></textarea>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
           <div class="form-group">
             <label class="form-label">Размер одежды</label>
             <input type="text" class="form-input" id="editUserClothes" />
@@ -812,10 +897,10 @@
             <label class="form-label">Размер обуви</label>
             <input type="text" class="form-input" id="editUserShoes" />
           </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Размер кольца</label>
-          <input type="text" class="form-input" id="editUserRing" />
+          <div class="form-group">
+            <label class="form-label">Размер кольца</label>
+            <input type="text" class="form-input" id="editUserRing" />
+          </div>
         </div>
         <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:4px;">
           <button type="button" class="btn" onclick="closeModal('editUserModal')">Отмена</button>
@@ -854,20 +939,31 @@
     const DEFAULT_OWNER_KEY_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // sha256("admin")
 
     let adminState = {
-      dbUrl: localStorage.getItem("wl_owner_db_url") || DEFAULT_DB_URL,
-      ownerName: localStorage.getItem("wl_owner_name") || "owner",
-      unlocked: sessionStorage.getItem("wl_owner_unlocked") === "1",
+      dbUrl: DEFAULT_DB_URL,
+      ownerName: "owner",
+      unlocked: false,
       activeTab: "users",
       usersMap: {},
       roomsMap: {},
       auditLogs: [],
-      ownerConfig: null
+      ownerConfig: null,
+      observedRoomSlug: null,
+      observedUserContext: null
     };
+
+    try {
+      const savedUrl = localStorage.getItem("wl_owner_db_url");
+      if (savedUrl) adminState.dbUrl = savedUrl;
+      const savedOwner = localStorage.getItem("wl_owner_name");
+      if (savedOwner) adminState.ownerName = savedOwner;
+      if (sessionStorage.getItem("wl_owner_unlocked") === "1") adminState.unlocked = true;
+    } catch (e) {}
 
     let pollTimer = null;
 
     function showToast(msg) {
       const el = document.getElementById("toast");
+      if (!el) return;
       el.textContent = msg;
       el.classList.add("show");
       clearTimeout(window._toastTimer);
@@ -875,33 +971,41 @@
     }
 
     function openModal(id) {
-      document.getElementById(id).classList.add("open");
+      const el = document.getElementById(id);
+      if (el) el.classList.add("open");
     }
 
     function closeModal(id) {
-      document.getElementById(id).classList.remove("open");
+      const el = document.getElementById(id);
+      if (el) el.classList.remove("open");
     }
 
     function toggleTheme() {
       const html = document.documentElement;
       const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
       html.setAttribute("data-theme", next);
-      localStorage.setItem("wl_owner_theme", next);
+      try { localStorage.setItem("wl_owner_theme", next); } catch (e) {}
     }
 
     async function sha256Hex(str) {
       try {
-        if (window.crypto && window.crypto.subtle) {
+        if (window.crypto && window.crypto.subtle && window.isSecureContext) {
           const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(str)));
           return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
         }
       } catch (e) {}
-      let h = 0;
+      // Deterministic fallback hash if crypto.subtle is unavailable
+      let h1 = 0x811c9dc5;
+      let h2 = 0x01000193;
       const s = String(str);
       for (let i = 0; i < s.length; i++) {
-        h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+        const ch = s.charCodeAt(i);
+        h1 ^= ch;
+        h1 = Math.imul(h1, 0x01000193);
+        h2 ^= ch + i;
+        h2 = Math.imul(h2, 0x85ebca6b);
       }
-      return ("00000000" + (h >>> 0).toString(16)).slice(-8);
+      return ((h1 >>> 0).toString(16).padStart(8, "0") + (h2 >>> 0).toString(16).padStart(8, "0"));
     }
 
     function dbBase() {
@@ -921,7 +1025,8 @@
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
     }
 
     function formatDate(ts) {
@@ -957,15 +1062,18 @@
         }
       } catch (e) {}
 
-      if (enteredHash !== expectedHash) {
+      const matchesDefaultAdmin = (pass === "admin" && expectedHash === DEFAULT_OWNER_KEY_HASH);
+      if (enteredHash !== expectedHash && !matchesDefaultAdmin) {
         errBox.textContent = "Неверный ключ владельца. По умолчанию для первого входа используется пароль: admin";
         errBox.style.display = "block";
         return;
       }
 
-      localStorage.setItem("wl_owner_db_url", adminState.dbUrl);
-      localStorage.setItem("wl_owner_name", adminState.ownerName);
-      sessionStorage.setItem("wl_owner_unlocked", "1");
+      try {
+        localStorage.setItem("wl_owner_db_url", adminState.dbUrl);
+        localStorage.setItem("wl_owner_name", adminState.ownerName);
+        sessionStorage.setItem("wl_owner_unlocked", "1");
+      } catch (e) {}
       adminState.unlocked = true;
 
       await writeAuditLog("owner_login", `Вход в панель владельца (${uname})`);
@@ -973,8 +1081,9 @@
     }
 
     function logoutOwner() {
-      sessionStorage.removeItem("wl_owner_unlocked");
+      try { sessionStorage.removeItem("wl_owner_unlocked"); } catch (e) {}
       adminState.unlocked = false;
+      adminState.observedRoomSlug = null;
       if (pollTimer) clearInterval(pollTimer);
       document.getElementById("adminConsole").style.display = "none";
       document.getElementById("ownerGate").style.display = "flex";
@@ -986,7 +1095,12 @@
       document.getElementById("adminConsole").style.display = "block";
       await refreshAllData(false);
       if (pollTimer) clearInterval(pollTimer);
-      pollTimer = setInterval(() => refreshAllData(false), 7000);
+      pollTimer = setInterval(() => {
+        refreshAllData(false);
+        if (document.getElementById("roomObserverModal").classList.contains("open") && adminState.observedRoomSlug) {
+          renderRoomObserverModal(adminState.observedRoomSlug);
+        }
+      }, 6000);
     }
 
     async function writeAuditLog(action, details, target = "") {
@@ -1029,12 +1143,72 @@
 
         updateKPIs();
         renderActiveTab();
+        if (document.getElementById("userInspectorModal").classList.contains("open") && adminState.observedUserContext) {
+          inspectUser(adminState.observedUserContext, true);
+        }
         if (notify) showToast("Данные синхронизированы с Firebase");
       } catch (err) {
         console.error(err);
         document.getElementById("connPill").innerHTML = `<span>Нет связи</span>`;
         showToast("Ошибка подключения к Firebase");
       }
+    }
+
+    function getUserRoomsDetailed(user) {
+      const result = [];
+      const seenSlugs = new Set();
+
+      Object.entries(adminState.roomsMap || {}).forEach(([slug, rObj]) => {
+        if (!rObj || typeof rObj !== "object") return;
+        const members = objectToArray(rObj.members);
+        const memberMatch = members.find(m => (user.id && m.id === user.id) || (m.username && m.username === user.username));
+        const inUserProfileRooms = user.raw && user.raw.rooms && Boolean(user.raw.rooms[slug]);
+
+        if (memberMatch || inUserProfileRooms) {
+          seenSlugs.add(slug);
+          const meta = rObj.meta || {};
+          const wishes = objectToArray(rObj.wishes);
+          const userWishesInRoom = wishes.filter(w =>
+            (user.id && w.ownerId === user.id) || (w.ownerId && w.ownerId.includes(`_${user.username}_`))
+          );
+          const isBannedInRoom = Boolean(
+            (rObj.bans && ((user.id && rObj.bans[user.id]) || (user.username && rObj.bans[user.username]))) ||
+            (memberMatch && memberMatch.banned)
+          );
+
+          result.push({
+            slug,
+            title: meta.title || slug,
+            description: meta.description || "",
+            ownerName: meta.ownerName || meta.ownerUsername || "—",
+            membersCount: members.length,
+            totalWishesCount: wishes.length,
+            userWishesCount: userWishesInRoom.length,
+            role: (memberMatch && memberMatch.role) || (meta.ownerUsername === user.username ? "owner" : "member"),
+            isBannedInRoom
+          });
+        }
+      });
+
+      if (user.raw && user.raw.rooms && typeof user.raw.rooms === "object") {
+        Object.entries(user.raw.rooms).forEach(([slug, rInfo]) => {
+          if (!seenSlugs.has(slug)) {
+            result.push({
+              slug,
+              title: (rInfo && rInfo.title) || slug,
+              description: "",
+              ownerName: "—",
+              membersCount: 0,
+              totalWishesCount: 0,
+              userWishesCount: 0,
+              role: (rInfo && rInfo.role) || "member",
+              isBannedInRoom: false
+            });
+          }
+        });
+      }
+
+      return result;
     }
 
     function getEnrichedUsers() {
@@ -1044,23 +1218,15 @@
         let wishCount = 0;
         let fulfilledCount = 0;
         let plannedCount = 0;
-        const roomNames = [];
-
-        if (u && u.rooms && typeof u.rooms === "object") {
-          Object.values(u.rooms).forEach(r => {
-            if (r && r.slug) {
-              roomNames.push(r.title || r.slug);
-            }
-          });
-        }
+        const roomEntries = [];
 
         Object.entries(adminState.roomsMap || {}).forEach(([rSlug, rObj]) => {
           if (!rObj || typeof rObj !== "object") return;
           const members = objectToArray(rObj.members);
-          const isMember = members.some(m => (userId && m.id === userId) || m.username === username);
+          const isMember = members.some(m => (userId && m.id === userId) || m.username === username) || (u && u.rooms && u.rooms[rSlug]);
           const rTitle = (rObj.meta && rObj.meta.title) || rSlug;
-          if (isMember && !roomNames.includes(rTitle)) {
-            roomNames.push(rTitle);
+          if (isMember) {
+            roomEntries.push({ slug: rSlug, title: rTitle });
           }
 
           const wishes = objectToArray(rObj.wishes);
@@ -1074,6 +1240,7 @@
         });
 
         return {
+          raw: u || {},
           username,
           id: userId || username,
           displayName: (u && u.displayName) || username,
@@ -1090,7 +1257,8 @@
           wishCount,
           fulfilledCount,
           plannedCount,
-          roomNames
+          roomEntries,
+          roomNames: roomEntries.map(x => x.title)
         };
       });
 
@@ -1168,7 +1336,7 @@
           <div class="user-top">
             <div class="user-identity">
               <div class="user-avatar" style="border-color:${escapeHtml(u.accentColor)}55; color:${escapeHtml(u.accentColor)};">
-                ${u.avatar ? `<img src="${u.avatar}" alt="" />` : escapeHtml(u.displayName.slice(0, 2).toUpperCase())}
+                ${u.avatar ? `<img src="${escapeHtml(u.avatar)}" alt="" />` : escapeHtml(u.displayName.slice(0, 2).toUpperCase())}
               </div>
               <div style="min-width:0;">
                 <div class="user-name">${escapeHtml(u.displayName)}</div>
@@ -1192,14 +1360,14 @@
               <div class="stat-lbl">Подарено</div>
             </div>
             <div>
-              <div class="stat-num">${u.roomNames.length}</div>
+              <div class="stat-num">${u.roomEntries.length}</div>
               <div class="stat-lbl">Комнат</div>
             </div>
           </div>
 
           <div class="user-rooms-chips">
-            ${u.roomNames.length > 0
-              ? u.roomNames.map(r => `<span class="room-chip">${escapeHtml(r)}</span>`).join("")
+            ${u.roomEntries.length > 0
+              ? u.roomEntries.map(r => `<button type="button" class="room-chip" title="Открыть комнату в режиме наблюдателя" onclick="openRoomObserver('${escapeHtml(r.slug)}', '${escapeHtml(u.username)}')">${escapeHtml(r.title)} · Наблюдать</button>`).join("")
               : `<span class="room-chip">Нет комнат</span>`
             }
           </div>
@@ -1209,7 +1377,7 @@
           ` : ""}
 
           <div class="user-actions">
-            <button type="button" class="btn btn-sm" onclick="inspectUser('${escapeHtml(u.username)}')">Мониторинг</button>
+            <button type="button" class="btn btn-sm btn-blue" onclick="inspectUser('${escapeHtml(u.username)}')">Мониторинг</button>
             <button type="button" class="btn btn-sm" onclick="openEditUserModal('${escapeHtml(u.username)}')">Изменить</button>
             ${u.suspended
               ? `<button type="button" class="btn btn-sm btn-success" onclick="unblockUserGlobal('${escapeHtml(u.username)}')">Разблокировать</button>`
@@ -1252,7 +1420,8 @@
                 </div>
                 ${meta.description ? `<div style="font-size:12px; color:var(--text-tertiary); margin-top:6px;">${escapeHtml(meta.description)}</div>` : ""}
               </div>
-              <div style="display:flex; gap:8px;">
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="btn btn-sm btn-blue" onclick="openRoomObserver('${escapeHtml(slug)}')">Режим наблюдателя</button>
                 <button type="button" class="btn btn-sm btn-danger" onclick="deleteRoomAsOwner('${escapeHtml(slug)}', '${escapeHtml(title)}')">Удалить комнату</button>
               </div>
             </div>
@@ -1274,7 +1443,7 @@
       container.innerHTML = `
         <div class="panel-card">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-            <div style="font-size:16px; font-weight:800;">Журнал действий администратора</div>
+            <div style="font-size:16px; font-weight:800;">Журнал действий администратора и мониторинга</div>
             <button type="button" class="btn btn-sm btn-danger" onclick="clearAuditLogs()">Очистить лог</button>
           </div>
           ${logs.length === 0
@@ -1326,25 +1495,42 @@
       showToast("Ключ владельца обновлён");
     }
 
-    function inspectUser(username) {
+    function inspectUser(username, silent = false) {
       const user = getEnrichedUsers().find(u => u.username === username);
       if (!user) return;
+      adminState.observedUserContext = username;
 
+      const userRooms = getUserRoomsDetailed(user);
       const userWishes = [];
       Object.entries(adminState.roomsMap || {}).forEach(([rSlug, rObj]) => {
         const rTitle = (rObj && rObj.meta && rObj.meta.title) || rSlug;
         objectToArray(rObj && rObj.wishes).forEach(w => {
           if ((user.id && w.ownerId === user.id) || (w.ownerId && w.ownerId.includes(`_${username}_`))) {
-            userWishes.push({ ...w, roomTitle: rTitle });
+            userWishes.push({ ...w, roomSlug: rSlug, roomTitle: rTitle });
           }
         });
       });
 
+      const userLogs = (adminState.auditLogs || []).filter(l =>
+        (l.target && l.target === username) || (l.details && l.details.includes(`@${username}`))
+      );
+
+      if (!silent) {
+        writeAuditLog("user_monitor_open", `Открыт мониторинг пользователя @${username} (${userRooms.length} комнат)`, username);
+      }
+
       document.getElementById("userInspectorBody").innerHTML = `
         <div class="modal-header">
           <div>
-            <div style="font-size:18px; font-weight:800;">${escapeHtml(user.displayName)} <span class="mono" style="color:var(--text-tertiary);">@${escapeHtml(user.username)}</span></div>
-            <div style="font-size:12px; color:var(--text-secondary);">ID: <span class="mono">${escapeHtml(user.id)}</span></div>
+            <div style="font-size:18px; font-weight:800;">
+              ${escapeHtml(user.displayName)} <span class="mono" style="color:var(--text-tertiary);">@${escapeHtml(user.username)}</span>
+              <span class="status-tag ${user.suspended ? "status-blocked" : "status-active"}" style="margin-left:6px;">
+                ${user.suspended ? "Заблокирован" : "Активен"}
+              </span>
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+              ID: <span class="mono">${escapeHtml(user.id)}</span> · Комнат: ${userRooms.length} · Желаний: ${userWishes.length}
+            </div>
           </div>
           <button type="button" class="btn btn-sm" onclick="closeModal('userInspectorModal')">✕</button>
         </div>
@@ -1356,16 +1542,68 @@
         </div>
 
         <div>
-          <div class="form-label">Желания пользователя (${userWishes.length})</div>
+          <div class="form-label">Комнаты пользователя (${userRooms.length}) — нажмите «Наблюдать» для входа в режиме наблюдателя</div>
+          ${userRooms.length === 0
+            ? `<div class="panel-card" style="padding:12px; font-size:13px; color:var(--text-tertiary);">Пользователь пока не состоит ни в одной комнате</div>`
+            : userRooms.map(r => `
+              <div class="member-row-card">
+                <div>
+                  <div style="font-weight:800; font-size:14px;">
+                    ${escapeHtml(r.title)} <span class="mono" style="color:var(--text-tertiary);">#${escapeHtml(r.slug)}</span>
+                    <span class="pill-mini pill-blue" style="margin-left:6px;">${escapeHtml(r.role)}</span>
+                    ${r.isBannedInRoom ? `<span class="pill-mini pill-red" style="margin-left:4px;">Бан в комнате</span>` : ""}
+                  </div>
+                  <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+                    Создатель: ${escapeHtml(r.ownerName)} · Участников: ${r.membersCount} · Желаний пользователя: ${r.userWishesCount} / всего ${r.totalWishesCount}
+                  </div>
+                </div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-sm btn-blue" onclick="openRoomObserver('${escapeHtml(r.slug)}', '${escapeHtml(user.username)}')">Наблюдать</button>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="kickUserFromRoomAsOwner('${escapeHtml(r.slug)}', '${escapeHtml(user.username)}', '${escapeHtml(user.id)}')">Исключить</button>
+                </div>
+              </div>
+            `).join("")
+          }
+        </div>
+
+        <div>
+          <div class="form-label">Все желания пользователя (${userWishes.length})</div>
           ${userWishes.length === 0
             ? `<div style="font-size:13px; color:var(--text-tertiary);">Желаний пока нет</div>`
             : userWishes.map(w => `
+              <div class="wish-row-card">
+                <div>
+                  <div style="font-weight:700;">
+                    ${escapeHtml(w.title)} ${w.price ? `<span style="color:var(--text-secondary);">· ${escapeHtml(w.price)}</span>` : ""}
+                    <span class="pill-mini ${w.fulfilled ? "pill-green" : (w.plannedBy ? "pill-amber" : "pill-blue")}" style="margin-left:6px;">
+                      ${w.fulfilled ? "Подарено" : (w.plannedBy ? "Запланировано: " + escapeHtml(w.plannedBy) : "Актуально")}
+                    </span>
+                  </div>
+                  <div style="font-size:11px; color:var(--text-tertiary); margin-top:2px;">
+                    Комната: <strong>${escapeHtml(w.roomTitle)}</strong> (${escapeHtml(w.roomSlug)})
+                    ${w.note ? ` · Заметка: ${escapeHtml(w.note)}` : ""}
+                  </div>
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button type="button" class="btn btn-sm" onclick="openRoomObserver('${escapeHtml(w.roomSlug)}', '${escapeHtml(user.username)}')">В комнату</button>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="deleteSingleWishAsOwner('${escapeHtml(w.roomSlug)}', '${escapeHtml(w.id)}', '${escapeHtml(user.username)}')">Удалить</button>
+                </div>
+              </div>
+            `).join("")
+          }
+        </div>
+
+        <div>
+          <div class="form-label">История действий по аккаунту (${userLogs.length})</div>
+          ${userLogs.length === 0
+            ? `<div style="font-size:12px; color:var(--text-tertiary);">Пока нет записанных событий по этому аккаунту</div>`
+            : userLogs.slice(0, 10).map(l => `
               <div class="log-item">
                 <div>
-                  <div style="font-weight:700;">${escapeHtml(w.title)} ${w.price ? `<span style="color:var(--text-secondary);">· ${escapeHtml(w.price)}</span>` : ""}</div>
-                  <div style="font-size:11px; color:var(--text-tertiary);">Комната: ${escapeHtml(w.roomTitle)} · ${w.fulfilled ? "Подарено" : (w.plannedBy ? "Запланировано: " + escapeHtml(w.plannedBy) : "Актуально")}</div>
+                  <span class="mono" style="color:var(--blue); font-weight:700;">${escapeHtml(l.action)}</span>
+                  <div style="margin-top:2px;">${escapeHtml(l.details)}</div>
                 </div>
-                <button type="button" class="btn btn-sm btn-danger" onclick="deleteSingleWishAsOwner('${escapeHtml(w.roomTitle)}', '${escapeHtml(w.id)}', '${escapeHtml(user.username)}')">Удалить</button>
+                <div style="font-size:11px; color:var(--text-tertiary); white-space:nowrap;">${formatDate(l.timestamp)}</div>
               </div>
             `).join("")
           }
@@ -1374,20 +1612,312 @@
       openModal("userInspectorModal");
     }
 
-    async function deleteSingleWishAsOwner(roomLabel, wishId, username) {
-      let targetSlug = null;
-      Object.entries(adminState.roomsMap || {}).forEach(([slug, rObj]) => {
-        if (rObj && rObj.wishes && rObj.wishes[wishId]) {
-          targetSlug = slug;
-        }
+    function openRoomObserver(slug, highlightUsername = null) {
+      adminState.observedRoomSlug = slug;
+      writeAuditLog("room_observer_enter", `Вход в режим наблюдателя комнаты #${slug}${highlightUsername ? ` (фокус на @${highlightUsername})` : ""}`, slug);
+      renderRoomObserverModal(slug, highlightUsername);
+      openModal("roomObserverModal");
+    }
+
+    function renderRoomObserverModal(slug, highlightUsername = null) {
+      const rObj = adminState.roomsMap && adminState.roomsMap[slug];
+      const body = document.getElementById("roomObserverBody");
+      if (!rObj || typeof rObj !== "object") {
+        body.innerHTML = `
+          <div class="modal-header">
+            <div style="font-size:17px; font-weight:800;">Комната #${escapeHtml(slug)} не найдена</div>
+            <button type="button" class="btn btn-sm" onclick="closeModal('roomObserverModal')">✕</button>
+          </div>
+          <p style="font-size:13px; color:var(--text-secondary);">Возможно, комната была удалена или ещё не синхронизирована.</p>
+        `;
+        return;
+      }
+
+      const meta = rObj.meta || {};
+      const title = meta.title || slug;
+      const members = objectToArray(rObj.members);
+      const wishes = objectToArray(rObj.wishes);
+      const bansMap = (rObj.bans && typeof rObj.bans === "object") ? rObj.bans : {};
+      const bansList = Object.entries(bansMap).map(([bKey, bVal]) => ({
+        key: bKey,
+        ...(typeof bVal === "object" && bVal !== null ? bVal : { username: bKey })
+      }));
+
+      const totalRoomPrice = wishes.reduce((sum, w) => {
+        const num = parseFloat(String(w.price || "").replace(/[^0-9.,]/g, "").replace(",", "."));
+        return sum + (isNaN(num) ? 0 : num);
+      }, 0);
+
+      body.innerHTML = `
+        <div class="modal-header">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span class="observer-badge">Режим наблюдателя и полного контроля</span>
+              <span style="font-size:18px; font-weight:800;">${escapeHtml(title)}</span>
+              <span class="mono" style="color:var(--text-tertiary);">#${escapeHtml(slug)}</span>
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
+              Создатель: <strong>${escapeHtml(meta.ownerName || meta.ownerUsername || "—")}</strong> · Участников: ${members.length} · Желаний: ${wishes.length} · Сумма желаний: ~${totalRoomPrice.toLocaleString("ru-RU")}
+            </div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn btn-sm" onclick="renderRoomObserverModal('${escapeHtml(slug)}', ${highlightUsername ? `'${escapeHtml(highlightUsername)}'` : "null"})">Обновить</button>
+            <button type="button" class="btn btn-sm" onclick="closeModal('roomObserverModal')">✕</button>
+          </div>
+        </div>
+
+        <div class="observer-banner">
+          <div style="font-size:12px; color:var(--text); line-height:1.45;">
+            Вы просматриваете комнату изнутри в режиме <strong>владельца сервиса</strong>: видны все участники, бронирования/дарения, чёрный список и доступна мгновенная модерация любого элемента.
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeModal('roomObserverModal'); deleteRoomAsOwner('${escapeHtml(slug)}', '${escapeHtml(title)}')">Удалить комнату</button>
+          </div>
+        </div>
+
+        <!-- Room Meta Control -->
+        <div class="panel-card" style="margin-bottom:0;">
+          <div class="form-label">Управление параметрами комнаты</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+            <div class="form-group">
+              <label class="form-label">Название комнаты</label>
+              <input type="text" class="form-input" id="obsRoomTitle" value="${escapeHtml(title)}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Описание</label>
+              <input type="text" class="form-input" id="obsRoomDesc" value="${escapeHtml(meta.description || "")}" />
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="button" class="btn btn-sm btn-primary" onclick="saveRoomMetaAsOwner('${escapeHtml(slug)}')">Сохранить параметры комнаты</button>
+          </div>
+        </div>
+
+        <!-- Members in Room -->
+        <div>
+          <div class="form-label">Участники комнаты (${members.length})</div>
+          ${members.length === 0
+            ? `<div style="font-size:13px; color:var(--text-tertiary);">Участников нет</div>`
+            : members.map(m => {
+                const mUsername = m.username || "";
+                const mId = m.id || mUsername;
+                const isHighlighted = highlightUsername && mUsername === highlightUsername;
+                const mWishes = wishes.filter(w => (m.id && w.ownerId === m.id) || (mUsername && w.ownerId && w.ownerId.includes(`_${mUsername}_`)));
+                return `
+                  <div class="member-row-card" style="${isHighlighted ? "border-color:var(--blue); box-shadow:0 0 0 1px var(--blue);" : ""}">
+                    <div>
+                      <div style="font-weight:800; font-size:13px;">
+                        ${escapeHtml(m.displayName || mUsername || mId)}
+                        ${mUsername ? `<span class="mono" style="color:var(--text-tertiary);">@${escapeHtml(mUsername)}</span>` : ""}
+                        <span class="pill-mini pill-blue" style="margin-left:6px;">${escapeHtml(m.role || "member")}</span>
+                        ${isHighlighted ? `<span class="pill-mini pill-green" style="margin-left:4px;">Выбранный пользователь</span>` : ""}
+                      </div>
+                      <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">
+                        Желаний в комнате: ${mWishes.length} · ID: <span class="mono">${escapeHtml(mId)}</span>
+                      </div>
+                    </div>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                      ${mUsername ? `<button type="button" class="btn btn-sm" onclick="closeModal('roomObserverModal'); inspectUser('${escapeHtml(mUsername)}')">Профиль</button>` : ""}
+                      <button type="button" class="btn btn-sm btn-warn" onclick="banUserInRoomAsOwner('${escapeHtml(slug)}', '${escapeHtml(mId)}', '${escapeHtml(mUsername)}', '${escapeHtml(m.displayName || mUsername)}')">Бан в комнате</button>
+                      <button type="button" class="btn btn-sm btn-danger" onclick="kickUserFromRoomAsOwner('${escapeHtml(slug)}', '${escapeHtml(mUsername)}', '${escapeHtml(mId)}')">Исключить</button>
+                    </div>
+                  </div>
+                `;
+              }).join("")
+          }
+        </div>
+
+        <!-- Wishes in Room -->
+        <div>
+          <div class="form-label">Все желания в комнате (${wishes.length})</div>
+          ${wishes.length === 0
+            ? `<div style="font-size:13px; color:var(--text-tertiary);">В этой комнате пока нет желаний</div>`
+            : wishes.map(w => {
+                const ownerMatch = highlightUsername && w.ownerId && w.ownerId.includes(`_${highlightUsername}_`);
+                return `
+                  <div class="wish-row-card" style="${ownerMatch ? "border-color:var(--blue);" : ""}">
+                    <div style="min-width:0; flex:1;">
+                      <div style="font-weight:800; font-size:14px;">
+                        ${escapeHtml(w.title || "Без названия")}
+                        ${w.price ? `<span style="color:var(--text-secondary); font-weight:700;">· ${escapeHtml(w.price)}</span>` : ""}
+                        <span class="pill-mini ${w.fulfilled ? "pill-green" : (w.plannedBy ? "pill-amber" : "pill-blue")}" style="margin-left:6px;">
+                          ${w.fulfilled ? "Подарено" : (w.plannedBy ? "Запланировал: " + escapeHtml(w.plannedBy) : "Свободно")}
+                        </span>
+                      </div>
+                      <div style="font-size:11px; color:var(--text-tertiary); margin-top:3px;">
+                        Автор: <strong>${escapeHtml(w.ownerName || w.ownerId || "—")}</strong>
+                        ${w.category ? ` · Категория: ${escapeHtml(w.category)}` : ""}
+                        ${w.priority ? ` · Приоритет: ${escapeHtml(w.priority)}` : ""}
+                      </div>
+                      ${w.note ? `<div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">${escapeHtml(w.note)}</div>` : ""}
+                      ${w.url ? `<div style="font-size:11px; margin-top:3px;"><a href="${escapeHtml(w.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--blue);">Ссылка на товар ↗</a></div>` : ""}
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px; align-items:flex-end;">
+                      <button type="button" class="btn btn-sm ${w.fulfilled ? "btn-warn" : "btn-success"}" onclick="toggleWishFulfilledAsOwner('${escapeHtml(slug)}', '${escapeHtml(w.id)}', ${!Boolean(w.fulfilled)})">
+                        ${w.fulfilled ? "Снять «Подарено»" : "Отметить подаренным"}
+                      </button>
+                      ${w.plannedBy ? `<button type="button" class="btn btn-sm" onclick="clearWishPlanAsOwner('${escapeHtml(slug)}', '${escapeHtml(w.id)}')">Снять бронь</button>` : ""}
+                      <button type="button" class="btn btn-sm btn-danger" onclick="deleteWishInObserver('${escapeHtml(slug)}', '${escapeHtml(w.id)}', '${escapeHtml(w.title || w.id)}')">Удалить</button>
+                    </div>
+                  </div>
+                `;
+              }).join("")
+          }
+        </div>
+
+        <!-- Room Bans -->
+        <div>
+          <div class="form-label">Чёрный список комнаты (${bansList.length})</div>
+          ${bansList.length === 0
+            ? `<div style="font-size:12px; color:var(--text-tertiary);">Заблокированных в этой комнате нет</div>`
+            : bansList.map(b => `
+              <div class="member-row-card">
+                <div>
+                  <div style="font-weight:700; font-size:13px;">${escapeHtml(b.displayName || b.username || b.key)} <span class="mono" style="color:var(--text-tertiary);">@${escapeHtml(b.username || b.key)}</span></div>
+                  <div style="font-size:11px; color:var(--red);">Причина: ${escapeHtml(b.reason || "Не указана")}</div>
+                </div>
+                <button type="button" class="btn btn-sm btn-success" onclick="unbanUserInRoomAsOwner('${escapeHtml(slug)}', '${escapeHtml(b.key)}', '${escapeHtml(b.username || b.key)}')">Разбанить</button>
+              </div>
+            `).join("")
+          }
+        </div>
+      `;
+    }
+
+    async function saveRoomMetaAsOwner(slug) {
+      const titleInput = document.getElementById("obsRoomTitle");
+      const descInput = document.getElementById("obsRoomDesc");
+      if (!titleInput) return;
+      const patch = {
+        title: titleInput.value.trim() || slug,
+        description: descInput ? descInput.value.trim() : ""
+      };
+      await fetch(`${dbBase()}/rooms/${slug}/meta.json`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patch)
       });
+      await writeAuditLog("room_meta_updated", `Обновлены параметры комнаты #${slug} (${patch.title})`, slug);
+      await refreshAllData(false);
+      renderRoomObserverModal(slug);
+      showToast("Параметры комнаты сохранены");
+    }
+
+    async function toggleWishFulfilledAsOwner(slug, wishId, fulfilledState) {
+      await fetch(`${dbBase()}/rooms/${slug}/wishes/${wishId}.json`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fulfilled: Boolean(fulfilledState), fulfilledAt: fulfilledState ? Date.now() : null })
+      });
+      await writeAuditLog("wish_fulfilled_toggle", `Изменён статус подарка ${wishId} -> ${fulfilledState ? "подарено" : "актуально"} в #${slug}`, wishId);
+      await refreshAllData(false);
+      renderRoomObserverModal(slug);
+      showToast(fulfilledState ? "Отмечено как подаренное" : "Статус подарка снят");
+    }
+
+    async function clearWishPlanAsOwner(slug, wishId) {
+      await fetch(`${dbBase()}/rooms/${slug}/wishes/${wishId}.json`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plannedBy: null, plannedByName: null })
+      });
+      await writeAuditLog("wish_unplanned", `Снята бронь/планирование с желания ${wishId} в #${slug}`, wishId);
+      await refreshAllData(false);
+      renderRoomObserverModal(slug);
+      showToast("Бронирование снято");
+    }
+
+    async function deleteWishInObserver(slug, wishId, title) {
+      if (!confirm(`Удалить желание «${title}» из комнаты #${slug}?`)) return;
+      await fetch(`${dbBase()}/rooms/${slug}/wishes/${wishId}.json`, { method: "DELETE" });
+      await writeAuditLog("wish_deleted", `Удалено желание «${title}» (${wishId}) в комнате #${slug}`, wishId);
+      await refreshAllData(false);
+      renderRoomObserverModal(slug);
+      showToast("Желание удалено");
+    }
+
+    async function banUserInRoomAsOwner(slug, memberId, username, displayName) {
+      const reason = prompt(`Причина бана в комнате #${slug} для ${displayName || username || memberId}:`, "Нарушение правил комнаты") || "Заблокирован владельцем";
+      const banKey = memberId || username;
+      if (!banKey) return;
+
+      await fetch(`${dbBase()}/rooms/${slug}/bans/${banKey}.json`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: memberId || banKey,
+          username: username || banKey,
+          displayName: displayName || username || banKey,
+          reason,
+          bannedAt: Date.now(),
+          bannedByOwner: true
+        })
+      });
+
+      if (memberId && adminState.roomsMap[slug] && adminState.roomsMap[slug].members && adminState.roomsMap[slug].members[memberId]) {
+        await fetch(`${dbBase()}/rooms/${slug}/members/${memberId}.json`, { method: "DELETE" });
+      }
+      if (username) {
+        await fetch(`${dbBase()}/users/${username}/rooms/${slug}.json`, { method: "DELETE" });
+      }
+
+      await writeAuditLog("room_user_banned", `Пользователь @${username || banKey} забанен в комнате #${slug}. Причина: ${reason}`, username || banKey);
+      await refreshAllData(false);
+      renderRoomObserverModal(slug);
+      showToast("Пользователь забанен в комнате");
+    }
+
+    async function unbanUserInRoomAsOwner(slug, banKey, username) {
+      await fetch(`${dbBase()}/rooms/${slug}/bans/${banKey}.json`, { method: "DELETE" });
+      if (username && username !== banKey) {
+        await fetch(`${dbBase()}/rooms/${slug}/bans/${username}.json`, { method: "DELETE" });
+      }
+      await writeAuditLog("room_user_unbanned", `Снят бан в комнате #${slug} с @${username || banKey}`, username || banKey);
+      await refreshAllData(false);
+      renderRoomObserverModal(slug);
+      showToast("Бан в комнате снят");
+    }
+
+    async function kickUserFromRoomAsOwner(slug, username, memberId) {
+      if (!confirm(`Исключить @${username || memberId} из комнаты #${slug}?`)) return;
+      const rObj = adminState.roomsMap[slug];
+      if (rObj && rObj.members) {
+        if (memberId && rObj.members[memberId]) {
+          await fetch(`${dbBase()}/rooms/${slug}/members/${memberId}.json`, { method: "DELETE" });
+        }
+        Object.entries(rObj.members).forEach(async ([mKey, mVal]) => {
+          if (mVal && username && mVal.username === username) {
+            await fetch(`${dbBase()}/rooms/${slug}/members/${mKey}.json`, { method: "DELETE" });
+          }
+        });
+      }
+      if (username) {
+        await fetch(`${dbBase()}/users/${username}/rooms/${slug}.json`, { method: "DELETE" });
+      }
+      await writeAuditLog("room_user_kicked", `Пользователь @${username || memberId} исключён из комнаты #${slug}`, username || memberId);
+      await refreshAllData(false);
+      if (document.getElementById("roomObserverModal").classList.contains("open")) {
+        renderRoomObserverModal(slug);
+      }
+      showToast("Пользователь исключён из комнаты");
+    }
+
+    async function deleteSingleWishAsOwner(roomSlug, wishId, username) {
+      let targetSlug = roomSlug;
+      if (!targetSlug || !(adminState.roomsMap[targetSlug] && adminState.roomsMap[targetSlug].wishes && adminState.roomsMap[targetSlug].wishes[wishId])) {
+        targetSlug = null;
+        Object.entries(adminState.roomsMap || {}).forEach(([slug, rObj]) => {
+          if (rObj && rObj.wishes && rObj.wishes[wishId]) {
+            targetSlug = slug;
+          }
+        });
+      }
       if (!targetSlug) {
         showToast("Желание не найдено в комнатах");
         return;
       }
       await fetch(`${dbBase()}/rooms/${targetSlug}/wishes/${wishId}.json`, { method: "DELETE" });
       await writeAuditLog("wish_deleted", `Удалено желание ${wishId} пользователя @${username} в комнате ${targetSlug}`, wishId);
-      closeModal("userInspectorModal");
       await refreshAllData(false);
       showToast("Желание удалено");
     }
@@ -1587,10 +2117,12 @@
     }
 
     (function initAdminConsole() {
-      const savedTheme = localStorage.getItem("wl_owner_theme");
-      if (savedTheme === "light" || savedTheme === "dark") {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-      }
+      try {
+        const savedTheme = localStorage.getItem("wl_owner_theme");
+        if (savedTheme === "light" || savedTheme === "dark") {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
+      } catch (e) {}
       document.getElementById("gateDbUrl").value = adminState.dbUrl;
       document.getElementById("gateUsername").value = adminState.ownerName;
 
